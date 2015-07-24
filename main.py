@@ -6,6 +6,7 @@ mR = np.array([[-1,-1,-1,-1,0,-1],
 					[-1,0,0,-1,0,-1],
 					[0,-1,-1,0,-1,100],
 					[-1,0,-1,-1,0,100]])
+					
 #rows are states, columns are actions
 #row 1, column 1 = taking action 1 at state 1
 
@@ -58,3 +59,16 @@ for episode in range(10000):
 	#end Do while
 
 print mQ
+
+print "\nShortest paths from each starting node:"
+
+for i in range(6):
+	moves = ''
+	player_pos = i
+	
+	while player_pos!=5:
+		moves += str(player_pos)+', '
+		player_pos = list(mQ[player_pos]).index(max(mQ[player_pos]))
+
+	moves+='5'
+	print moves
