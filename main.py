@@ -16,6 +16,9 @@ mQ = np.zeros((6,6))
 #set the gamma parameter.
 learningRate = 0.8
 
+#set the discount parameter
+discountRate = 0.7
+
 #set the goal state
 goalState = 5
 
@@ -49,7 +52,7 @@ for episode in range(10000):
 		nextStateMaxQ = max([mQ[nextState,a] for a in nextStatePossibleActions])
 	
 		#compute the updated Q
-		mQ[currentState,nextState] = mR[currentState,nextState]+learningRate*nextStateMaxQ
+		mQ[currentState,nextState] = mQ[currentState,nextState] + learningRate*(mR[currentState,nextState]+discountRate*nextStateMaxQ - mQ[currentState,nextState])
 	
 		#set the next state as the current state
 		currentState = nextState
@@ -57,8 +60,12 @@ for episode in range(10000):
 		if currentState == goalState: #if the goal is reached then end the episode
 			break
 	#end Do while
+	
+	#adjusting learning rate over time
+	#if episode%1000==0:
+	#	learningRate*=0.9
 
-print mQ
+print (100*mQ/np.amax(mQ)).astype(int)
 
 print "\nShortest paths from each starting node:"
 
